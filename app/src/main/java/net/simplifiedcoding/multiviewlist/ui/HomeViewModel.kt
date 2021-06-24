@@ -25,6 +25,5 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHomeListItems() {
-
     }
 }
