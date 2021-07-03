@@ -1,6 +1,7 @@
 package net.simplifiedcoding.multiviewlist.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import net.simplifiedcoding.multiviewlist.R
@@ -17,8 +18,10 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var itemClickListener: ((view: View, item: HomeRecyclerViewItem, position: Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecyclerViewHolder {
-        return when(viewType){
+        return when (viewType) {
             R.layout.item_title -> HomeRecyclerViewHolder.TitleViewHolder(
                 ItemTitleBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -45,7 +48,8 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: HomeRecyclerViewHolder, position: Int) {
-        when(holder){
+        holder.itemClickListener = itemClickListener
+        when (holder) {
             is HomeRecyclerViewHolder.DirectorViewHolder -> holder.bind(items[position] as HomeRecyclerViewItem.Director)
             is HomeRecyclerViewHolder.MovieViewHolder -> holder.bind(items[position] as HomeRecyclerViewItem.Movie)
             is HomeRecyclerViewHolder.TitleViewHolder -> holder.bind(items[position] as HomeRecyclerViewItem.Title)
@@ -55,7 +59,7 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
     override fun getItemCount() = items.size
 
     override fun getItemViewType(position: Int): Int {
-        return when(items[position]){
+        return when (items[position]) {
             is HomeRecyclerViewItem.Director -> R.layout.item_director
             is HomeRecyclerViewItem.Movie -> R.layout.item_movie
             is HomeRecyclerViewItem.Title -> R.layout.item_title
